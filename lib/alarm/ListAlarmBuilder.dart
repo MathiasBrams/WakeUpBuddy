@@ -9,6 +9,7 @@ class AlarmsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AlarmData>(
       builder: (context, alarmData, child) {
+        
         return ListView.builder(
           physics: ScrollPhysics(),
           itemBuilder: (context, index) {

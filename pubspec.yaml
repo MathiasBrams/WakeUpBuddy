@@ -65,15 +65,10 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  fonts:
-    - family: Baloo
-      fonts:
-        - asset: assets/fonts/Baloo-Regular.ttf
   assets:
     - assets/images/food/
     - assets/images/snake/
     - assets/images/games/
-    - lib/games/flutters/assets/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

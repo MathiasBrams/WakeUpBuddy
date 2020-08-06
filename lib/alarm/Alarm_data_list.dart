@@ -6,15 +6,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AlarmData extends ChangeNotifier{
   List<Alarm> _alarms = [
-    Alarm(time: Time(13, 45)),
-    Alarm(time: Time(14, 00)),
   ];
 
+
+
+
   UnmodifiableListView<Alarm> get alarms {
+    _alarms.sort((a, b) => a.id.compareTo(b.id));
     return UnmodifiableListView(_alarms);
   }
-
-
 
   int get alarmCount {
     return _alarms.length;
@@ -31,8 +31,8 @@ class AlarmData extends ChangeNotifier{
   //   notifyListeners();
   // }
 
-  // void deleteTask(Task task) {
-  //   _tasks.remove(task);
-  //   notifyListeners();
-  // }
+  void deleteAlarm(Alarm alarm) {
+    _alarms.remove(alarm);
+    notifyListeners();
+  }
 }

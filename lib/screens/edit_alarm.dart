@@ -114,6 +114,10 @@ String intDayToEnglish(int day) {
               ),
               color: Colors.orange[300],
               onPressed: () async {
+                // cancel old alarm
+                Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                _cancelNotification(widget.alarm.id);
+
                 id = _dateTime.microsecondsSinceEpoch;
                 // shortId method is used to shorten the id, so it fits to a 32 int max length of ~ 2 mil
                 // there is a smarter method im sure... but for now it works 
@@ -126,9 +130,28 @@ String intDayToEnglish(int day) {
                 Navigator.pop(context);
               },
             ),
+            FlatButton(
+              child: Text(
+                'Delete alarm',
+                style: TextStyle(
+                  color: Colors.white, fontSize: 18,
+                ),
+              ),
+              color: Colors.red,
+              onPressed: () async {
+                // cancel old alarm
+                Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                _cancelNotification(widget.alarm.id);
+                Navigator.pop(context);
+              }
+            ),
       ])
     );
   }
+
+Future<void> _cancelNotification(dynamic id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }  
 
 Future<void> _showDailyAtTime(Time time, int id) async {
           var insistentFlag = 4;
