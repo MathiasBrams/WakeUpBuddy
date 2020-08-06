@@ -6,10 +6,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AlarmData extends ChangeNotifier{
   List<Alarm> _alarms = [
+    Alarm(time: Time(08,00), id: 1324142511)
   ];
 
 
-
+  
 
   UnmodifiableListView<Alarm> get alarms {
     _alarms.sort((a, b) => a.id.compareTo(b.id));

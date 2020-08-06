@@ -41,6 +41,14 @@ dependencies:
   equatable: ^1.1.1
   animations: ^1.1.2
   url_launcher: ^5.4.2
+  settings_ui: ^0.3.0
+  firebase_core: ^0.4.5
+  firebase_auth: ^0.16.1
+  cloud_firestore: ^0.13.7
+  flutter_icons: ^1.1.0
+  flutter_login_facebook: ^0.2.0+1
+  google_sign_in: ^4.5.1
+  google_fonts: ^1.1.0
   
 
 dev_dependencies:

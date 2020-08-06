@@ -59,11 +59,28 @@ String intDayToEnglish(int day) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Alarm', style: TextStyle(color: Colors.white)),
+        actions: <Widget>[
+            IconButton(icon: Icon(Icons.check), onPressed: () async {
+              // delete old alarm
+                  Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                _cancelNotification(widget.alarm.id);
+
+                id = _dateTime.microsecondsSinceEpoch;
+                // shortId method is used to shorten the id, so it fits to a 32 int max length of ~ 2 mil
+                // there is a smarter method im sure... but for now it works 
+                // maybe .toString().padLeft(9, 0);
+                shortId = math.pow(id, 0.6).toInt();
+                print(id);
+                print(shortId);
+                Provider.of<AlarmData>(context, listen: false).addAlarm(newTime, shortId);
+                await _showDailyAtTime(newTime, shortId);
+                Navigator.pop(context);
+                },)
+          ],
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
-        Card(
-                  child: TimePickerSpinner(
+        TimePickerSpinner(
             is24HourMode: true,
             secondsInterval: 5,
             // normalTextStyle: TextStyle(
@@ -87,7 +104,6 @@ String intDayToEnglish(int day) {
               });
             },
           ),
-        ),
         // WeekdaySelector(
         //   onChanged: (int day) {
         //     setState(() {
@@ -105,31 +121,30 @@ String intDayToEnglish(int day) {
         //   values: values,
           
         //   ),
-        FlatButton(
-              child: Text(
-                'Save',
-                style: TextStyle(
-                  color: Colors.white, fontSize: 18,
-                ),
-              ),
-              color: Colors.orange[300],
-              onPressed: () async {
-                // cancel old alarm
-                Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
-                _cancelNotification(widget.alarm.id);
-
-                id = _dateTime.microsecondsSinceEpoch;
-                // shortId method is used to shorten the id, so it fits to a 32 int max length of ~ 2 mil
-                // there is a smarter method im sure... but for now it works 
-                // maybe .toString().padLeft(9, 0);
-                shortId = math.pow(id, 0.6).toInt();
-                print(id);
-                print(shortId);
-                Provider.of<AlarmData>(context, listen: false).addAlarm(newTime, shortId);
-                await _showDailyAtTime(newTime, shortId);
-                Navigator.pop(context);
-              },
-            ),
+            Card(
+                  child: ListTile(
+                      leading: Text('Ringtone ', style: TextStyle(fontSize: 16)),
+                      trailing: 
+                          Text('Standard', style: TextStyle(fontWeight: FontWeight.w300)),
+                      )),
+              Card(
+                  child: ListTile(
+                      leading: Text('Vibration ', style: TextStyle(fontSize: 16)),
+                      trailing: 
+                          Text('Standard', style: TextStyle(fontWeight: FontWeight.w300)),
+                      )),
+              Card(
+                  child: ListTile(
+                      leading: Text('Game ', style: TextStyle(fontSize: 16)),
+                      trailing: 
+                          Text('Snake', style: TextStyle(fontWeight: FontWeight.w300)),
+                      )),
+              Card(
+                  child: ListTile(
+                      leading: Text('Repeat ', style: TextStyle(fontSize: 16)),
+                      trailing: 
+                          Text('Everyday', style: TextStyle(fontWeight: FontWeight.w300)),
+                      )),
             FlatButton(
               child: Text(
                 'Delete alarm',
@@ -137,7 +152,7 @@ String intDayToEnglish(int day) {
                   color: Colors.white, fontSize: 18,
                 ),
               ),
-              color: Colors.red,
+              color: Colors.red[400],
               onPressed: () async {
                 // cancel old alarm
                 Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 

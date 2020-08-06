@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.WakeUpBuddy">
+    package="com.APPMVP.WakeUpBuddy">
 
 
     <uses-permission android:name="android.permission.INTERNET"/>

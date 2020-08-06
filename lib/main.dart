@@ -6,10 +6,13 @@ import 'package:WakeUpBuddy/alarm/Alarm_data_list.dart';
 import 'package:WakeUpBuddy/alarm/Alarm_tile.dart';
 import 'package:WakeUpBuddy/alarm/ListAlarmBuilder.dart';
 import 'package:WakeUpBuddy/games/snaake/lib/snaake_game_main.dart';
+import 'package:WakeUpBuddy/landing_page.dart';
 import 'package:WakeUpBuddy/screens/add_alarm.dart';
 import 'package:WakeUpBuddy/screens/alarm_page.dart';
 import 'package:WakeUpBuddy/screens/edit_alarm.dart';
 import 'package:WakeUpBuddy/screens/game_overview_page.dart';
+import 'package:WakeUpBuddy/screens/settings_page.dart';
+import 'package:WakeUpBuddy/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -83,15 +86,16 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => AlarmData(),
+    return Provider<AuthBase>(
+      create: (context) => Auth(),
         child: MaterialApp(
           theme: ThemeData(
               primaryColor: Color(0xFFFFA726), accentColor: Color(0xFFff9f1a)),
-          home: HomePage(),
+          home: LandingPage(),
         ));
   }
 }
+
 
 class HomePage extends StatefulWidget {
   HomePage({this.alarm});
@@ -179,7 +183,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+        create: (context) => AlarmData(),
+        child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: Color(0xFFFFA726), accentColor: Colors.orange[300]),
@@ -187,8 +193,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
           title: Text('Wake Up Buddy',
-              style: TextStyle(color: Colors.white, fontSize: 22)),
+              style: TextStyle(color: Colors.grey[200], fontSize: 22)),
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.settings, color: Colors.grey[200]), onPressed: () {Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );},)
+          ],
         ),
         body: PageTransitionSwitcher(
         duration: Duration(milliseconds: 1200),
@@ -224,6 +238,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
         ),
+        )
     );
   }
 
@@ -333,3 +348,4 @@ class _HomePageState extends State<HomePage> {
     return value.toString().padLeft(2, '0');
   }
 }
+
