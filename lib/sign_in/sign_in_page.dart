@@ -84,12 +84,12 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('LifeStack', style: GoogleFonts.poppins()),
+        title: Text('Wake Up Buddy', style: GoogleFonts.poppins()),
         centerTitle: true,
         elevation: 2.0,
       ),
       body: _buildContent(context),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.blue[200],
     );
   }
 
@@ -101,17 +101,20 @@ class SignInPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _buildHeader(),
-          Text("It's time for discipline!",
+          Text("Start Playing",
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(textStyle: TextStyle(
-              fontSize: 28.0,))),
-          Text('Build your wall brick by brick.',
+              fontSize: 40.0,))),
+          Text('to Stop Snoozing',
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(textStyle: TextStyle(
-              fontSize: 18.0,))),
-          Image.asset('images/hero_brick_L.png'),
+              fontSize: 24.0,))),
+          Container(width: MediaQuery.of(context).size.width * 0.75,
+            height: MediaQuery.of(context).size.width * 0.55,
+            child: Image.asset('assets/images/app_icon.jpg')),
+          SizedBox(height: 20),
           SocialSignInButton(
-            assetName: 'images/google-logo.png',
+            assetName: 'assets/images/google-logo.png',
             text: 'Sign in with Google',
             textColor: Colors.black87,
             color: Colors.white,
@@ -119,7 +122,7 @@ class SignInPage extends StatelessWidget {
           ),
           SizedBox(height: 8.0),
           SocialSignInButton(
-            assetName: 'images/facebook-logo.png',
+            assetName: 'assets/images/facebook-logo.png',
             text: 'Sign in with Facebook',
             textColor: Colors.black87,
             color: Colors.white,
@@ -153,7 +156,7 @@ class SignInPage extends StatelessWidget {
   Widget _buildHeader() {
     if (isLoading) {
       return Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(backgroundColor: Colors.white,),
       );
     } else {
       return Container();

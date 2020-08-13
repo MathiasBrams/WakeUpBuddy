@@ -1,5 +1,6 @@
 import 'package:WakeUpBuddy/common_widgets/platform_alert_dialog.dart';
 import 'package:WakeUpBuddy/services/auth.dart';
+import 'package:WakeUpBuddy/services/database.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,23 @@ import 'languages_page.dart';
 
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key key, @required this.database, @required this.user})
+  : super(key: key);
+  final Database database;
+  final User user;
+
+static Future<void> show(
+    BuildContext context, {
+    Database database,
+    User user,
+  }) async {
+    await Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(
+        builder: (context) => SettingsScreen(database: database, user: user),
+        fullscreenDialog: true,
+      ),
+    );
+  }
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -21,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _signOut(BuildContext context) async {
     try {
-      final auth = Provider.of<AuthBase>(context);
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
     } catch (e) {
       print(e.toString());
@@ -75,7 +93,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile(title: 'Email', leading: Icon(Icons.email)),
               SettingsTile(title: 'Sign out', leading: Icon((Icons.exit_to_app)), onTap: () {
                 _confirmSignOut(context);
-                Navigator.of(context).pop();}),
+                Navigator.of(context).pop(true);
+                Navigator.of(context).pop();
+                }),
+                
             ],
           ),
           SettingsSection(

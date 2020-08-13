@@ -5,7 +5,7 @@ class GameColors {
   GameColors._();
 
   /// Primary color.
-  static const primary = Color(0xFFFFA726);
+  static const primary = Color(0xFF2196F3);
 
   /// Primary dark color.
   static const primaryDark = Color(0xFFFFAB40);
@@ -17,8 +17,8 @@ class GameColors {
   static const background = Color(0xFFFAFAFA);
 
   /// The color used to draw the chess background.
-  static const backgroundChess = Color(0xFFFFD180);
+  static const backgroundChess = Color(0xFFBBDEFB);
 
   /// The colors of the pause background.
-  static const pauseBackground = Color(0xFFFFD180);
+  static const pauseBackground = Color(0xFF64b5F6);
 }

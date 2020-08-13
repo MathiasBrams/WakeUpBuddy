@@ -76,8 +76,8 @@ class _SwitchAlarmState extends State<SwitchAlarm> {
                 
                 );
               },
-              activeTrackColor: Colors.orange[200],
-              activeColor: Color(0xFFFFA726),
+              activeTrackColor: Colors.blue[200],
+              activeColor: Colors.blue,
             ),
     );
   }

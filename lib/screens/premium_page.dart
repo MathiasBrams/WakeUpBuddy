@@ -12,8 +12,8 @@ class _PremiumPageState extends State<PremiumPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text('Get premium'),
+          
+          title: Text('Get premium', style: TextStyle(color: Colors.white)),
           centerTitle: true,
         ),
         body: ListView(padding: EdgeInsets.all(12), children: <Widget>[
@@ -26,7 +26,7 @@ class _PremiumPageState extends State<PremiumPage> {
             children: <Widget>[
               Text('Upgrade', style: TextStyle(fontSize: 24)),
               SizedBox(width: 10),
-              Icon(Icons.thumb_up, color: Colors.orange),
+              Icon(Icons.thumb_up, color: Colors.blue),
             ],
           ),
           Text(
@@ -45,15 +45,12 @@ class _PremiumPageState extends State<PremiumPage> {
           ListTile(
               leading: Icon(Icons.check, color: Colors.green),
               title: Text('Choose your own ringtones')),
-          ListTile(
-              leading: Icon(Icons.check, color: Colors.green),
-              title: Text('Instant upgrade to new features')),
           Align(
               child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
                   height: 40,
                   child: RaisedButton(
-                      color: Colors.orange[300],
+                      color: Colors.blue[300],
                       elevation: 5,
                       child: Text('PREMIUM MONTHLY 0.99€',
                           style: TextStyle(color: Colors.white)),
@@ -64,7 +61,7 @@ class _PremiumPageState extends State<PremiumPage> {
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: 50,
                 child: RaisedButton(
-                    color: Colors.orange,
+                    color: Colors.blue,
                     elevation: 5,
                     child: Text('PREMIUM ANNUAL 8.99€',
                         style: TextStyle(color: Colors.white)),

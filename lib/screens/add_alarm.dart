@@ -83,7 +83,7 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
                 //   color: Colors.deepOrange
                 // ),
                 highlightedTextStyle:
-                    TextStyle(fontSize: 40, color: Colors.orange[300]),
+                    TextStyle(fontSize: 40, color: Colors.blue[300]),
                 spacing: 50,
                 itemHeight: 50,
                 // isForce2Digits: true,

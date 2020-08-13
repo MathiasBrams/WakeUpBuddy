@@ -13,6 +13,7 @@ import 'package:WakeUpBuddy/screens/edit_alarm.dart';
 import 'package:WakeUpBuddy/screens/game_overview_page.dart';
 import 'package:WakeUpBuddy/screens/settings_page.dart';
 import 'package:WakeUpBuddy/services/auth.dart';
+import 'package:WakeUpBuddy/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -90,7 +91,7 @@ class MyApp extends StatelessWidget {
       create: (context) => Auth(),
         child: MaterialApp(
           theme: ThemeData(
-              primaryColor: Color(0xFFFFA726), accentColor: Color(0xFFff9f1a)),
+              primaryColor: Colors.blue, accentColor: Colors.blue[200]),
           home: LandingPage(),
         ));
   }
@@ -188,7 +189,7 @@ class _HomePageState extends State<HomePage> {
         child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Color(0xFFFFA726), accentColor: Colors.orange[300]),
+          primaryColor: Colors.blue[400], accentColor: Colors.blue[200]),
       home: Scaffold(
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
@@ -196,12 +197,8 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.grey[200], fontSize: 22)),
           centerTitle: true,
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.settings, color: Colors.grey[200]), onPressed: () {Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SettingsScreen(),
+            IconButton(icon: Icon(Icons.settings, color: Colors.grey[200]), onPressed: () => SettingsScreen.show(context, database: Provider.of<Database>(context, listen: false), user: Provider.of<User>(context, listen: false)),
                   ),
-                );},)
           ],
         ),
         body: PageTransitionSwitcher(
