@@ -48,7 +48,8 @@ class AlarmTile extends StatelessWidget {
       elevation: 5,
       child: ListTile(
         leading: Image.asset('assets/images/games/snake_background.jpg'),
-        title: Text('${_toTwoDigitString(alarm.time.hour)}:${_toTwoDigitString(alarm.time.minute)}'),
+        title: Text('${_toTwoDigitString(alarm.hours)}:${_toTwoDigitString(alarm.minutes)}'),
+        // :${_toTwoDigitString(alarm.minutes)}'),
         subtitle: Text('Alarm'),
         onTap: onPressed,
         trailing: SwitchAlarm(alarm),

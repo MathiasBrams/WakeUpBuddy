@@ -1,11 +1,6 @@
 class APIPath {
-  static String job(String uid, String jobId) => 'users/$uid/jobs/$jobId';
-  static String jobs(String uid) => 'users/$uid/jobs';
-  static String entry(String uid, String entryId) =>
-      'users/$uid/entries/$entryId';
-  static String entries(String uid) => 'users/$uid/entries';
+  static String alarm(String uid, String alarmId) => 'users/$uid/alarms/$alarmId';
+  static String alarms(String uid) => 'users/$uid/alarms';
 
-  static String quotes() => 'motivation';
-  static String tasks() => 'tasks';
-  static String categories() => 'categories';
+  static String highscore() => 'highscore';
 }

@@ -62,7 +62,7 @@ String intDayToEnglish(int day) {
         actions: <Widget>[
             IconButton(icon: Icon(Icons.check), onPressed: () async {
               // delete old alarm
-                  Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                  // Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
                 _cancelNotification(widget.alarm.id);
 
                 id = _dateTime.microsecondsSinceEpoch;
@@ -72,7 +72,7 @@ String intDayToEnglish(int day) {
                 shortId = math.pow(id, 0.6).toInt();
                 print(id);
                 print(shortId);
-                Provider.of<AlarmData>(context, listen: false).addAlarm(newTime, shortId);
+                // Provider.of<AlarmData>(context, listen: false).addAlarm(newTime, shortId);
                 await _showDailyAtTime(newTime, shortId);
                 Navigator.pop(context);
                 },)
@@ -155,7 +155,7 @@ String intDayToEnglish(int day) {
               color: Colors.red[400],
               onPressed: () async {
                 // cancel old alarm
-                Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                // Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
                 _cancelNotification(widget.alarm.id);
                 Navigator.pop(context);
               }

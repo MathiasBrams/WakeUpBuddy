@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:WakeUpBuddy/alarm/Alarm_data_list.dart';
+import 'package:WakeUpBuddy/alarm/Alarm_model.dart';
+import 'package:WakeUpBuddy/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
@@ -25,6 +27,9 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
 
   int id;
   int shortId;
+
+  Database database;
+  Alarm alarm;
 
   @override
   void initState() {
@@ -53,6 +58,7 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
 
   @override
   Widget build(BuildContext context) {
+    database = Provider.of<Database>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('Add Alarm', style: TextStyle(color: Colors.white)),
@@ -65,9 +71,12 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
                   shortId = math.pow(id, 0.6).toInt();
                   print(id);
                   print(shortId);
-                  Provider.of<AlarmData>(context, listen: false)
-                      .addAlarm(newTime, shortId);
+                  // Provider.of<AlarmData>(context, listen: false)
+                  //     .addAlarm(newTime, shortId);
                   await _showDailyAtTime(newTime, shortId);
+                  alarm = Alarm(id: shortId, time: newTime, docID: shortId.toString());
+                  database.setAlarm(alarm);
+                  print('shit' + alarm.toString());
                   Navigator.pop(context);
                 },)
           ],

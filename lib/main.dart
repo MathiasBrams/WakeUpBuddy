@@ -184,58 +184,55 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => AlarmData(),
-        child: MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.blue[400], accentColor: Colors.blue[200]),
+      primaryColor: Colors.blue[400], accentColor: Colors.blue[200]),
       home: Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-          title: Text('Wake Up Buddy',
-              style: TextStyle(color: Colors.grey[200], fontSize: 22)),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.settings, color: Colors.grey[200]), onPressed: () => SettingsScreen.show(context, database: Provider.of<Database>(context, listen: false), user: Provider.of<User>(context, listen: false)),
-                  ),
-          ],
-        ),
-        body: PageTransitionSwitcher(
-        duration: Duration(milliseconds: 1200),
-        transitionBuilder: (
-          Widget child,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return FadeThroughTransition(
-            animation: animation,
-            secondaryAnimation: secondaryAnimation,
-            child: child,
-          );
-        },
-        child: pageList[pageIndex],
+    backgroundColor: Colors.grey[200],
+    appBar: AppBar(
+      title: Text('Wake Up Buddy',
+          style: TextStyle(color: Colors.grey[200], fontSize: 22)),
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(icon: Icon(Icons.settings, color: Colors.grey[200]), onPressed: () => SettingsScreen.show(context, database: Provider.of<Database>(context, listen: false), user: Provider.of<User>(context, listen: false)),
+              ),
+      ],
+    ),
+    body: PageTransitionSwitcher(
+    duration: Duration(milliseconds: 1200),
+    transitionBuilder: (
+      Widget child,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) {
+      return FadeThroughTransition(
+        animation: animation,
+        secondaryAnimation: secondaryAnimation,
+        child: child,
+      );
+    },
+    child: pageList[pageIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: pageIndex,
-        onTap: (int newValue) {
-          setState(() {
-            pageIndex = newValue;
-          });
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
-            title: Text('Alarms'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.games),
-            title: Text('Games'),
-          ),
-        ],
+    currentIndex: pageIndex,
+    onTap: (int newValue) {
+      setState(() {
+        pageIndex = newValue;
+      });
+    },
+    items: const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
+        icon: Icon(Icons.alarm),
+        title: Text('Alarms'),
       ),
-        ),
-        )
+      BottomNavigationBarItem(
+        icon: Icon(Icons.games),
+        title: Text('Games'),
+      ),
+    ],
+      ),
+    ),
     );
   }
 

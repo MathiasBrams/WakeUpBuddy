@@ -65,10 +65,10 @@ class _SwitchAlarmState extends State<SwitchAlarm> {
               onChanged: (value) {
                 if (!value) {
                   // cancels the scheduled alarm
-                  _cancelNotification(widget.alarm.id);
+                  _cancelNotification(widget.alarm.shortID);
                 } else {
                   // sets the alarm back at the same time and the same id
-                  showDailyAtTime(widget.alarm.time, widget.alarm.id);
+                  showDailyAtTime(widget.alarm.time, widget.alarm.shortID);
                 }
                 setState(() {
                   isSwitched = value;

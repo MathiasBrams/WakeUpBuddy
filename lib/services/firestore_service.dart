@@ -39,12 +39,6 @@ class FirestoreService {
     await reference.updateData({"runAnimation": true});
   }
 
-  Future<void> toggleVisibleDataTrue({@required String path}) async {
-    final reference = Firestore.instance.document(path);
-    print('update: $path');
-    
-    await reference.updateData({"visible": true});
-  }
   
 
   Stream<List<T>> collectionStream<T>({
