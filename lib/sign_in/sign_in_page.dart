@@ -61,15 +61,15 @@ class SignInPage extends StatelessWidget {
     }
   }
 
-  Future<void> _signInWithFacebook(BuildContext context) async {
-    try {
-      await manager.signInWithFacebook();
-    } on PlatformException catch (e) {
-      if (e.code != 'ERROR_ABORTED_BY_USER') {
-        _showSignInError(context, e);
-      }
-    }
-  }
+  // Future<void> _signInWithFacebook(BuildContext context) async {
+  //   try {
+  //     await manager.signInWithFacebook();
+  //   } on PlatformException catch (e) {
+  //     if (e.code != 'ERROR_ABORTED_BY_USER') {
+  //       _showSignInError(context, e);
+  //     }
+  //   }
+  // }
 
   void _signInWithEmail(BuildContext context) {
     Navigator.of(context).push(
@@ -126,7 +126,7 @@ class SignInPage extends StatelessWidget {
             text: 'Sign in with Facebook',
             textColor: Colors.black87,
             color: Colors.white,
-            onPressed: isLoading ? null : () => _signInWithFacebook(context),
+            onPressed: isLoading ? null : () {},
           ),
           SizedBox(height: 8.0),
           SignInButton(

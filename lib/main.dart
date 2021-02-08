@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:WakeUpBuddy/alarm/Alarm_data_list.dart';
 import 'package:WakeUpBuddy/alarm/Alarm_tile.dart';
 import 'package:WakeUpBuddy/alarm/ListAlarmBuilder.dart';
-import 'package:WakeUpBuddy/games/snaake/lib/snaake_game_main.dart';
 import 'package:WakeUpBuddy/landing_page.dart';
 import 'package:WakeUpBuddy/screens/add_alarm.dart';
 import 'package:WakeUpBuddy/screens/alarm_page.dart';
@@ -85,6 +84,8 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+
+  
   @override
   Widget build(BuildContext context) {
     return Provider<AuthBase>(
@@ -106,6 +107,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void dispose() {
+    didReceiveLocalNotificationSubject.close();
+    selectNotificationSubject.close();
+    super.dispose();
+  }
 
   // pages for navigation
   int pageIndex = 0;
@@ -115,72 +122,7 @@ class _HomePageState extends State<HomePage> {
     GamesPage(),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _requestIOSPermissions();
-    _configureDidReceiveLocalNotificationSubject();
-    _configureSelectNotificationSubject();
-  }
 
-  void _requestIOSPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-  }
-
-  void _configureDidReceiveLocalNotificationSubject() {
-    didReceiveLocalNotificationSubject.stream
-        .listen((ReceivedNotification receivedNotification) async {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null
-              ? Text(receivedNotification.title)
-              : null,
-          content: receivedNotification.body != null
-              ? Text(receivedNotification.body)
-              : null,
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              child: Text('Ok'),
-              onPressed: () async {
-                Navigator.of(context, rootNavigator: true).pop();
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SnakeGame()
-                      // (receivedNotification.payload),
-                      ),
-                );
-              },
-            )
-          ],
-        ),
-      );
-    });
-  }
-
-  void _configureSelectNotificationSubject() {
-    selectNotificationSubject.stream.listen((String payload) async {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SnakeGame()),
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    didReceiveLocalNotificationSubject.close();
-    selectNotificationSubject.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

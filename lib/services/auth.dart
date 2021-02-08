@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class User {
@@ -21,7 +20,7 @@ abstract class AuthBase {
   Future<User> signInWithEmailAndPassword(String email, String password);
   Future<User> createUserWithEmailAndPassword(String email, String password);
   Future<User> signInWithGoogle();
-  Future<User> signInWithFacebook();
+  // Future<User> signInWithFacebook();
   Future<void> signOut();
 }
 
@@ -99,29 +98,29 @@ class Auth implements AuthBase {
     }
   }
 
-  @override
-  Future<User> signInWithFacebook() async {
-    final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logIn(permissions: [
-  FacebookPermission.publicProfile,]);
+  // @override
+  // Future<User> signInWithFacebook() async {
+  //   final facebookLogin = FacebookLogin();
+  //   final result = await facebookLogin.logIn(permissions: [
+  // FacebookPermission.publicProfile,]);
 
-    if (result.status == FacebookLoginStatus.Success) {
-      final FacebookAccessToken accessToken = result.accessToken;
-      print('Access token: ${accessToken.token}');
+  //   if (result.status == FacebookLoginStatus.Success) {
+  //     final FacebookAccessToken accessToken = result.accessToken;
+  //     print('Access token: ${accessToken.token}');
 
-      final authResult = await _firebaseAuth.signInWithCredential(
-        FacebookAuthProvider.getCredential(
-          accessToken: accessToken.token,
-        ),
-      );
-      return _userFromFirebase(authResult.user);
-    } else {
-      throw PlatformException(
-        code: 'ERROR_ABORTED_BY_USER',
-        message: 'Sign in aborted by user',
-      );
-    }
-  }
+  //     final authResult = await _firebaseAuth.signInWithCredential(
+  //       FacebookAuthProvider.getCredential(
+  //         accessToken: accessToken.token,
+  //       ),
+  //     );
+  //     return _userFromFirebase(authResult.user);
+  //   } else {
+  //     throw PlatformException(
+  //       code: 'ERROR_ABORTED_BY_USER',
+  //       message: 'Sign in aborted by user',
+  //     );
+  //   }
+  // }
 
   @override
   Future<void> signOut() async {

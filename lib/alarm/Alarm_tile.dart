@@ -22,6 +22,16 @@ class AlarmTile extends StatelessWidget {
     return value.toString().padLeft(2, '0');
   }
 
+  String selectGameIcon(String game) {
+    if (game == 'Block Breaker') {
+      return 'assets/images/block_breaker_game.png';
+    } else if (game == 'Laser Defender') {
+      return 'assets/images/laser_defender_game.png';
+    } else {
+      return 'assets/images/block_breaker_game.png';
+    }
+  }
+
   String _fromIntToDay(int value) {
     if (value == 1) {
       return 'Sunday';
@@ -47,10 +57,10 @@ class AlarmTile extends StatelessWidget {
     return Card(
       elevation: 5,
       child: ListTile(
-        leading: Image.asset('assets/images/games/snake_background.jpg'),
+        leading: Image.asset(selectGameIcon(alarm.game)),
         title: Text('${_toTwoDigitString(alarm.hours)}:${_toTwoDigitString(alarm.minutes)}'),
         // :${_toTwoDigitString(alarm.minutes)}'),
-        subtitle: Text('Alarm'),
+        subtitle: Text(alarm.game ?? 'Alarm'),
         onTap: onPressed,
         trailing: SwitchAlarm(alarm),
       ));

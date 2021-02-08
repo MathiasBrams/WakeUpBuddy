@@ -9,6 +9,7 @@ import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:provider/provider.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'dart:math' as math;
+import 'package:group_radio_button/group_radio_button.dart';
 
 import '../main.dart';
 
@@ -18,6 +19,12 @@ class AddAlarmScreen extends StatefulWidget {
 }
 
 class AddAlarmScreenState extends State<AddAlarmScreen> {
+  String ringtoneValue = "slow_spring_board";
+  String gameValue = "Block Breaker";
+
+  List<String> ringtones = ["slow_spring_board", "alarm_clock"];
+  List<String> games = ["Block Breaker", "Laser Defender"];
+
   final values = List.filled(7, false);
   DateTime _dateTime;
   int newTimeMinute;
@@ -28,12 +35,28 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
   int id;
   int shortId;
 
+  String ringtone = 'slow_spring_board';
+  String gameScene = '2';
+  String channelID;
+
   Database database;
   Alarm alarm;
 
   @override
   void initState() {
+
     super.initState();
+  }
+
+  // method to set the game scene number for Alarm, depending on string name choice
+  void selectGameScene(String gameValue) {
+    if (gameValue == "Block Breaker"){
+      gameScene = '2';
+    } else if (gameValue == "Laser Defender"){
+      gameScene = '5';
+    } else {
+      gameScene = '1';
+    }
   }
 
   String _toTwoDigitString(int value) {
@@ -60,112 +83,141 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
   Widget build(BuildContext context) {
     database = Provider.of<Database>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Add Alarm', style: TextStyle(color: Colors.white)),
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.check), onPressed: () async {
-                  id = _dateTime.microsecondsSinceEpoch;
-                  // shortId method is used to shorten the id, so it fits to a 32 int max length of ~ 2 mil
-                  // there is a smarter method im sure... but for now it works
-                  // maybe .toString().padLeft(9, 0);
-                  shortId = math.pow(id, 0.6).toInt();
-                  print(id);
-                  print(shortId);
-                  // Provider.of<AlarmData>(context, listen: false)
-                  //     .addAlarm(newTime, shortId);
-                  await _showDailyAtTime(newTime, shortId);
-                  alarm = Alarm(id: shortId, time: newTime, docID: shortId.toString());
-                  database.setAlarm(alarm);
-                  print('shit' + alarm.toString());
-                  Navigator.pop(context);
-                },)
-          ],
-        ),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TimePickerSpinner(
-                is24HourMode: true,
-                secondsInterval: 5,
-                // normalTextStyle: TextStyle(
-                //   fontSize: 24,
-                //   color: Colors.deepOrange
-                // ),
-                highlightedTextStyle:
-                    TextStyle(fontSize: 40, color: Colors.blue[300]),
-                spacing: 50,
-                itemHeight: 50,
-                // isForce2Digits: true,
-                onTimeChange: (time) {
+      appBar: AppBar(
+        title: Text('Add Alarm', style: TextStyle(color: Colors.white)),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () async {
+              id = _dateTime.microsecondsSinceEpoch;
+              // shortId method is used to shorten the id, so it fits to a 32 int max length of ~ 2 mil
+              // there is a smarter method im sure... but for now it works
+              // maybe .toString().padLeft(9, 0);
+              shortId = math.pow(id, 0.6).toInt();
+              print(id);
+              print(shortId);
+              channelID = id.toString();
+              // Provider.of<AlarmData>(context, listen: false)
+              //     .addAlarm(newTime, shortId);
+              await _showDailyAtTime(
+                  newTime, shortId, ringtone, channelID, gameScene);
+              alarm =
+                  Alarm(id: shortId, time: newTime, docID: shortId.toString(), game: gameValue);
+              database.setAlarm(alarm);
+              print('shit' + alarm.toString());
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+      body: ListView(
+        children: <Widget>[
+          SizedBox(height: 80),
+          TimePickerSpinner(
+            is24HourMode: true,
+            secondsInterval: 5,
+            // normalTextStyle: TextStyle(
+            //   fontSize: 24,
+            //   color: Colors.deepOrange
+            // ),
+            highlightedTextStyle:
+                TextStyle(fontSize: 40, color: Colors.blue[300]),
+            spacing: 50,
+            itemHeight: 50,
+            // isForce2Digits: true,
+            onTimeChange: (time) {
+              setState(() {
+                _dateTime = time;
+                newTimeMinute = _dateTime.minute;
+                newTimeHour = _dateTime.hour;
+                newTime = Time(newTimeHour, newTimeMinute);
+                print(
+                    '${_toTwoDigitString(newTime.hour)}:${_toTwoDigitString(newTime.minute)}');
+              });
+            },
+          ),
+          SizedBox(height: 40),
+          // WeekdaySelector(
+          //   onChanged: (int day) {
+          //     setState(() {
+          //       // Use module % 7 as Sunday's index in the array is 0 and
+          //       // DateTime.sunday constant integer value is 7.
+
+          //       // We "flip" the value in this example, but you may also
+          //       // perform validation, a DB write, an HTTP call or anything
+          //       // else before you actually flip the value,
+          //       // it's up to your app's needs.
+          //       values[day % 7] = !values[day % 7];
+          //       printIntAsDay(day);
+          //     });
+          //   },
+          //   values: values,
+
+          //   ),
+          Card(
+            child: ListTile(
+              leading: Text('Ringtone', style: TextStyle(fontSize: 16)),
+              trailing: Text(ringtoneValue,
+                  style: TextStyle(fontWeight: FontWeight.w300)),
+              onTap: () async {
+                String returnVal = await showDialog(
+                context: context,
+                child: BuildRadioDialog(selected: ringtoneValue, content: ringtones));
                   setState(() {
-                    _dateTime = time;
-                    newTimeMinute = _dateTime.minute;
-                    newTimeHour = _dateTime.hour;
-                    newTime = Time(newTimeHour, newTimeMinute);
-                    print(
-                        '${_toTwoDigitString(newTime.hour)}:${_toTwoDigitString(newTime.minute)}');
-                  });
-                },
-              ),
-              // WeekdaySelector(
-              //   onChanged: (int day) {
-              //     setState(() {
-              //       // Use module % 7 as Sunday's index in the array is 0 and
-              //       // DateTime.sunday constant integer value is 7.
-
-              //       // We "flip" the value in this example, but you may also
-              //       // perform validation, a DB write, an HTTP call or anything
-              //       // else before you actually flip the value,
-              //       // it's up to your app's needs.
-              //       values[day % 7] = !values[day % 7];
-              //       printIntAsDay(day);
-              //     });
-              //   },
-              //   values: values,
-
-              //   ),
-              Card(
-                  child: ListTile(
-                      leading: Text('Ringtone ', style: TextStyle(fontSize: 16)),
-                      trailing: 
-                          Text('Standard', style: TextStyle(fontWeight: FontWeight.w300)),
-                      )),
-              Card(
-                  child: ListTile(
-                      leading: Text('Vibration ', style: TextStyle(fontSize: 16)),
-                      trailing: 
-                          Text('Standard', style: TextStyle(fontWeight: FontWeight.w300)),
-                      )),
-              Card(
-                  child: ListTile(
-                      leading: Text('Game ', style: TextStyle(fontSize: 16)),
-                      trailing: 
-                          Text('Snake', style: TextStyle(fontWeight: FontWeight.w300)),
-                      )),
-              Card(
-                  child: ListTile(
-                      leading: Text('Repeat ', style: TextStyle(fontSize: 16)),
-                      trailing: 
-                          Text('Everyday', style: TextStyle(fontWeight: FontWeight.w300)),
-                      )),
-            ]));
+                    ringtoneValue = returnVal; 
+                    ringtone = ringtoneValue;
+                  });}
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: Text('Games ', style: TextStyle(fontSize: 16)),
+              trailing: Text(gameValue,
+                  style: TextStyle(fontWeight: FontWeight.w300)),
+              onTap: () async {
+                String returnVal = await showDialog(
+                context: context,
+                child: BuildRadioDialog(selected: gameValue, content: games));
+              setState(() {
+                gameValue = returnVal; 
+              });
+              selectGameScene(gameValue);
+              }
+            ),
+          ),        
+          Card(
+              child: ListTile(
+            leading: Text('Vibration ', style: TextStyle(fontSize: 16)),
+            trailing:
+                Text(ringtoneValue, style: TextStyle(fontWeight: FontWeight.w300)),
+            onTap: () async {
+              String returnVal = await showDialog(
+                context: context,
+                child: BuildRadioDialog(selected: ringtoneValue, content: ringtones));
+              setState(() {
+                ringtoneValue = returnVal; 
+              });}
+          )),
+        ],
+      ),
+    );
   }
 
-  Future<void> _showDailyAtTime(Time time, int id) async {
+  Future<void> _showDailyAtTime(Time time, int id, String ringtone,
+      String channelID, String gameScene) async {
     var insistentFlag = 4;
     var vibrationPattern = Int64List(4);
     vibrationPattern[0] = 0;
     vibrationPattern[1] = 1000;
     vibrationPattern[2] = 5000;
     vibrationPattern[3] = 2000;
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'repeatDailyAtTime channel id',
-        'repeatDailyAtTime channel name',
-        'repeatDailyAtTime description',
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(channelID,
+        'name + $channelID', 'info + $channelID',
         icon: 'secondary_icon',
         additionalFlags: Int32List.fromList([insistentFlag]),
-        sound: RawResourceAndroidNotificationSound('slow_spring_board'),
-        largeIcon: DrawableResourceAndroidBitmap('sample_large_icon'),
+        sound: RawResourceAndroidNotificationSound(ringtone),
+        playSound: true,
+        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
         vibrationPattern: vibrationPattern,
         enableLights: true,
         showWhen: true,
@@ -182,9 +234,69 @@ class AddAlarmScreenState extends State<AddAlarmScreen> {
     await flutterLocalNotificationsPlugin.showDailyAtTime(
         id,
         'Rise and shine buddy',
-        'Play the game or suffer :-)',
+        'Snoozing is loosing!',
         time,
-        platformChannelSpecifics);
-    print('this is' + id.toString());
+        platformChannelSpecifics,
+        payload: gameScene);
   }
 }
+
+class BuildRadioDialog extends StatefulWidget {
+
+  BuildRadioDialog({this.selected, this.content});
+  final String selected;
+  final List<String> content;
+
+  @override
+  _BuildRadioDialogState createState() => _BuildRadioDialogState();
+}
+
+class _BuildRadioDialogState extends State<BuildRadioDialog> {
+
+  String selectedID;
+  List<String> choices;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedID = widget.selected;
+    choices = widget.content;
+
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+                  return AlertDialog(
+                    contentTextStyle: TextStyle(fontSize: 20, color: Colors.black),
+                    content: StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            RadioGroup<String>.builder(
+                              spacebetween: 50,
+                              groupValue: selectedID,
+                              onChanged: (value) => setState(() {
+                                selectedID = value;
+                                print(selectedID);
+
+                                // close dialog, selectedID gets callbacked
+                                Future.delayed(Duration(milliseconds: 300), () {
+                                  Navigator.of(context).pop(selectedID);
+                                } );
+                                
+                              }),
+                              items: choices,
+                              itemBuilder: (item) => RadioButtonBuilder(
+                                item,
+                                textPosition: RadioButtonTextPosition.left,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+              }
+  }

@@ -1,5 +1,4 @@
 import 'package:WakeUpBuddy/alarm/ListAlarmBuilder.dart';
-import 'package:WakeUpBuddy/games/snaake/lib/snaake_game_main.dart';
 import 'package:flutter/material.dart';
 
 class PremiumPage extends StatefulWidget {

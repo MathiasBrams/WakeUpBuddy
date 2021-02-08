@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:WakeUpBuddy/alarm/Alarm_data_list.dart';
 import 'package:WakeUpBuddy/alarm/Alarm_model.dart';
+import 'package:WakeUpBuddy/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
@@ -30,6 +31,9 @@ class EditAlarmScreenState extends State<EditAlarmScreen> {
   int id;
   int shortId;
 
+  Database database;
+  Alarm alarm;
+  
   @override
   void initState() {
     super.initState();
@@ -56,6 +60,7 @@ String intDayToEnglish(int day) {
 
   @override
   Widget build(BuildContext context) {
+    database = Provider.of<Database>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Alarm', style: TextStyle(color: Colors.white)),
@@ -63,6 +68,7 @@ String intDayToEnglish(int day) {
             IconButton(icon: Icon(Icons.check), onPressed: () async {
               // delete old alarm
                   // Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                database.deleteAlarm(widget.alarm);
                 _cancelNotification(widget.alarm.id);
 
                 id = _dateTime.microsecondsSinceEpoch;
@@ -73,6 +79,9 @@ String intDayToEnglish(int day) {
                 print(id);
                 print(shortId);
                 // Provider.of<AlarmData>(context, listen: false).addAlarm(newTime, shortId);
+                alarm = Alarm(id: shortId, time: newTime, docID: shortId.toString());
+                database.setAlarm(alarm);
+                
                 await _showDailyAtTime(newTime, shortId);
                 Navigator.pop(context);
                 },)
@@ -156,6 +165,7 @@ String intDayToEnglish(int day) {
               onPressed: () async {
                 // cancel old alarm
                 // Provider.of<AlarmData>(context, listen: false).deleteAlarm(widget.alarm); 
+                database.deleteAlarm(widget.alarm);
                 _cancelNotification(widget.alarm.id);
                 Navigator.pop(context);
               }

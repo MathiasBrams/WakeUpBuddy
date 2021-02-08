@@ -9,6 +9,8 @@ import 'package:WakeUpBuddy/services/firestore_service.dart';
 
 abstract class Database {
   Future<void> setAlarm(Alarm alarm);
+  Future<void> deleteAlarm(Alarm alarm);
+  
   Stream<List<Alarm>> alarmsStream();
   
 }
@@ -26,6 +28,10 @@ class FirestoreDatabase implements Database {
         path: APIPath.alarm(uid, alarm.docID),
         data: alarm.toMap(),
       );
+
+  @override
+  Future<void> deleteAlarm(Alarm alarm) async =>
+      await _service.deleteData(path: APIPath.alarm(uid, alarm.docID));
 
   @override
   Stream<List<Alarm>> alarmsStream() => _service.collectionStream(

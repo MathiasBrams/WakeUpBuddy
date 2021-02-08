@@ -52,7 +52,7 @@ class _SwitchAlarmState extends State<SwitchAlarm> {
           await flutterLocalNotificationsPlugin.showDailyAtTime(
               id,
               'Rise and shine buddy',
-              'Play the game or suffer :-)',
+              'Snoozing is loosing!',
               time,
               platformChannelSpecifics);
         }
