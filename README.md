@@ -1,16 +1,9 @@
 # WakeUpBuddy
 
-A new Flutter project.
+Mobile app where you can set an alarm to wake up, but in order to turn it off you have to play a game first.
 
-## Getting Started
+App made in Flutter/Dart with social sign-ups and user tracking in Firebase.
 
-This project is a starting point for a Flutter application.
+The game is made with Unity/C# and imported into the app with a Flutter pub.dev package called UnityLibrary.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The game won't work because files in the unity library exceeds the 100MB individual Github limit, so they were set in the .gitignore.
